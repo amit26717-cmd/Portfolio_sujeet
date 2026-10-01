@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sujeet Patel | Visual Stories</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+
+
+    .work-navbar {
+    width: 100%;
+    padding: 28px 8%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #000;
+
+    border-bottom: 1px solid #222;
+}
+
+.work-logo {
+    color: #fff;
+    text-decoration: none;
+
+    font-size: 14px;
+    letter-spacing: 3px;
+}
+
+.work-nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.work-nav-links a {
+    color: #aaa;
+    text-decoration: none;
+
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    transition: color 0.3s ease;
+}
+
+.work-nav-links a:hover {
+    color: #fff;
+}   
+        .work-header {
+            padding: 100px 8% 60px;
+        }
+
+        .work-label {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+
+        .work-header h1 {
+            font-size: clamp(45px, 7vw, 100px);
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .work-header p {
+            max-width: 600px;
+            margin-top: 25px;
+            line-height: 1.7;
+            color: #aaa;
+        }
+
+        .category-nav {
+            padding: 0 8% 50px;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category-nav button {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .category-nav button:hover {
+            color: #fff;
+        }
+       .category-nav button {
+    position: relative;
+}
+
+.category-nav button.active {
+    color: #fff;
+}
+
+.category-nav button.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+
+    width: 100%;
+    height: 1px;
+
+    background: #fff;
+
+    transform: scaleX(1);
+    transform-origin: left;
+
+    transition: transform 0.3s ease;
+}
+
+        .gallery {
+            padding: 0 5% 100px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+        }
+
+       .gallery-item img {
+    width: 100%;
+    display: block;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+        .gallery-item:hover img {
+            transform: scale(1.03);
+        }
+
+
+        .gallery-item {
+    position: relative;
+}
+
+.image-info {
+    position: absolute;
+    left: 25px;
+    bottom: 25px;
+
+    color: #fff;
+
+    opacity: 0;
+    transform: translateY(10px);
+
+    transition: all 0.3s ease;
+
+    z-index: 2;
+}
+
+.gallery-item:hover .image-info {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.image-info span {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+    opacity: 0.7;
+}
+
+.image-info h3 {
+    font-size: 22px;
+    font-weight: 400;
+}
+        .gallery-wide {
+    grid-column: 1 / -1;
+}
+        .gallery-tall {
+            grid-row: span 2;
+}
+
+ 
+        .back-home {
+            padding: 40px 8%;
+            border-top: 1px solid #222;
+        }
+
+        .back-home a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            .gallery-tall {
+                grid-row: auto;
+}
+
+            .gallery-wide {
+                grid-column: auto;
+}
+            .image-info {
+                opacity: 1;
+                transform: translateY(0);
+}
+            .work-header {
+                padding-top: 70px;
+            }
+
+            .work-navbar {
+                padding: 22px 5%;
+            }
+
+            .work-nav-links {
+                gap: 15px;
+            }
+
+            .work-nav-links a {
+                font-size: 9px;
+            }
+
+        }
+
+        /* =========================
+   WORK LIGHTBOX
+========================= */
+
+.work-lightbox {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100vh;
+
+    background: rgba(0, 0, 0, 0.95);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+
+    z-index: 9999;
+}
+
+.work-lightbox.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.work-lightbox img {
+    max-width: 88%;
+    max-height: 85vh;
+    object-fit: contain;
+
+    transform: scale(0.96);
+    opacity: 0;
+
+    transition:
+        transform 0.35s ease,
+        opacity 0.35s ease;
+}
+
+.work-lightbox.active img {
+    transform: scale(1);
+    opacity: 1;
+}
+
+
+
+
+.work-lightbox-close,
+.work-lightbox-prev,
+.work-lightbox-next {
+    position: absolute;
+
+    background: none;
+    border: none;
+
+    color: white;
+
+    cursor: pointer;
+
+    z-index: 2;
+}
+
+.work-lightbox-close {
+    top: 25px;
+    right: 35px;
+
+    font-size: 40px;
+}
+
+.work-lightbox-prev {
+    left: 30px;
+
+    font-size: 35px;
+}
+
+.work-lightbox-next {
+    right: 30px;
+
+    font-size: 35px;
+}
+
+.work-lightbox-close:hover,
+.work-lightbox-prev:hover,
+.work-lightbox-next:hover {
+    opacity: 0.6;
+}
+
+
+@media (max-width: 768px) {
+
+    .work-lightbox img {
+        max-width: 92%;
+        max-height: 80vh;
+    }
+
+    .work-lightbox-close {
+        top: 15px;
+        right: 20px;
+    }
+
+    .work-lightbox-prev {
+        left: 15px;
+    }
+
+    .work-lightbox-next {
+        right: 15px;
+    }
+
+}
+
+
+
+
+.work-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+
+    .work-menu-toggle {
+        display: block;
+    }
+
+    .work-nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 25px 5%;
+        background: #000;
+        border-bottom: 1px solid #222;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .work-nav-links.active {
+        display: flex;
+    }
+
+}
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+<nav class="work-navbar">
+
+    <a href="index.html" class="work-logo">
+        SUJEET PATEL
+    </a>
+
+        <button class="work-menu-toggle" aria-label="Open Menu">
+            ☰
+        </button>
+
+    <div class="work-nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+    </div>
+
+</nav>
+
+
+    <!-- HEADER -->
+
+    <header class="work-header">
+
+        <p class="work-label">
+            Portfolio
+        </p>
+
+        <h1>
+            VISUAL STORIES
+        </h1>
+
+        <p>
+            A collection of photographser that exploring
+            fashion, portrait, product and creative visual stories.
+        </p>
+
+    </header>
+
+
+    <!-- CATEGORY -->
+
+    <nav class="category-nav">
+
+        <button class="active">All</button>
+
+        <button>Fashion</button>
+        <button>Product</button>
+
+        <button>Portrait</button>
+        <button>Creative</button>
+        <button>Food</button>
+        <button>Wedding</button>
+
+       
+
+    </nav>
+
+
+    <!-- GALLERY -->
+
+    <main class="gallery">
+
+
+
+<!-- <div class="gallery-item" data-category="wedding">
+
+    <img
+        src="images/DSC09769.jpg"
+        alt="Wedding Photography"
+        class="work-gallery-image"
+    >
+
+    <div class="image-info">
+        <span>WEDDING</span>
+        <h3>Wedding Stories</h3>
+    </div>
+
+</div> -->
+
+
+
+
+
+     <div class="gallery-item " data-category="fashion">
+
+    <img
+        src="images/Fashion/IMG_2293_.jpg"
+        alt="Fashion Photography"
+        class="work-gallery-image"
+    >
+
+    <div class="image-info">
+        <span>FASHION</span>
+        <h3>Editorial Series</h3>
+    </div>
+
+</div>
+
+        <div class="gallery-item" data-category="fashion">
+    <img
+        src="images/Fashion/_H5A2969.jpg"
+        alt="Fashion Photography"
+        class="work-gallery-image"
+    >
+</div>
+
+        <div class="gallery-item" data-category="fashion">
+    <img
+        src="images/Fashion/_H5A2906_.jpg"
+        alt="Fashion Photography"
+        class="work-gallery-image"
+    >
+</div>
+        <div class="gallery-item" data-category="fashion">
+    <img
+        src="images/Fashion/_H5A2935.jpg"
+        alt="Fashion Photography"
+        class="work-gallery-image"
+    >
+</div>
+        <div class="gallery-item" data-category="fashion">
+    <img
+        src="images/Fashion/_H5A2926_.jpg"
+        alt="Fashion Photography"
+        class="work-gallery-image"
+    >
+</div>
+
+
+        <div class="gallery-item" data-category="fashion">
+    <img
+        src="images/Fashion/_H5A2895_.jpg"
+        alt="Fashion Photography"
+        class="work-gallery-image"
+    >
+</div>
+
+
+
+        <div class="gallery-item" data-category="fashion">
+    <img
+        src="images/Fashion/_H5A2871.jpg"
+        alt="Fashion Photography"
+        class="work-gallery-image"
+    >
+</div>
+
+
+
+<!-- 
+     <div class="gallery-item gallery-tall" data-category="portrait">
+
+    <img
+        src="images/DSC09769.jpg"
+        alt="Portrait Photography"
+        class="work-gallery-image"
+    >
+
+    <div class="image-info">
+        <span>PORTRAIT</span>
+        <h3>Portrait Series</h3>
+    </div>
+
+</div>
+
+        <div class="gallery-item" data-category="portrait">
+    <img
+        src="images/DSC03042.jpg"
+        alt="Portrait Photography"
+        class="work-gallery-image"
+    >
+</div> -->
+
+
+
+
+  <div class="gallery-item" data-category="product">
+
+    <img
+        src="images/product/IMG_0920.jpg"
+        alt="Product Photography"
+        class="work-gallery-image"
+    >
+
+    <div class="image-info">
+        <span>PRODUCT</span>
+        <h3>Product Series</h3>
+    </div>
+
+</div>
+<div class="gallery-item" data-category="product">
+    <img
+        src="images/product/IMG_0940.jpg"
+        alt="Product Photography"
+        class="work-gallery-image"
+    >
+</div>
+
+<div class="gallery-item" data-category="product">
+    <img
+        src="images/product/IMG_0963.jpg"
+        alt="Product Photography"
+        class="work-gallery-image"
+    >
+</div>
+
+<div class="gallery-item" data-category="product">
+    <img
+        src="images/product/IMG_0915.jpg"
+        alt="Product Photography"
+        class="work-gallery-image"
+    >
+</div>
+
+<div class="gallery-item" data-category="product">
+    <img
+        src="images/product/0H5A1583.jpg"
+        alt="Product Photography"
+        class="work-gallery-image"
+    >
+</div>
+
+<div class="gallery-item" data-category="product">
+    <img
+        src="images/product/0H5A1639.jpg"
+        alt="Product Photography"
+        class="work-gallery-image"
+    >
+</div>
+
+<div class="gallery-item" data-category="product">
+    <img
+        src="images/product/0H5A1649.jpg"
+        alt="Product Photography"
+        class="work-gallery-image"
+    >
+</div>
+
+
+      <div class="gallery-item gallery-wide" data-category="creative">
+    <img
+        src="images/Creative/_H5A2935.jpg"
+        alt="Creative Photography"
+        class="work-gallery-image"
+    >
+    <div class="image-info">
+    <span>CREATIVE</span>
+    <h3>Creative Visuals</h3>
+</div>
+</div>
+    </main>
+
+
+    <!-- BACK -->
+
+    <footer class="back-home">
+
+        <a href="index.html">
+            ← Back to Home
+        </a>
+
+    </footer>
+
+
+    <!-- LIGHTBOX -->
+
+<div class="work-lightbox" id="workLightbox">
+
+    <button class="work-lightbox-close" id="workLightboxClose">
+        &times;
+    </button>
+
+    <button class="work-lightbox-prev" id="workLightboxPrev">
+        &#10094;
+    </button>
+
+    <img
+        id="workLightboxImage"
+        alt="Full Image"
+    >
+   
+
+    <button class="work-lightbox-next" id="workLightboxNext">
+        &#10095;
+    </button>
+
+</div>
+
+<script>
+
+    const categoryButtons = document.querySelectorAll(".category-nav button");
+    const galleryItems = document.querySelectorAll(".gallery-item");
+
+
+
+    categoryButtons.forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        categoryButtons.forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        const selectedCategory =
+            button.textContent.toLowerCase();
+
+        galleryItems.forEach(function(item) {
+
+            const itemCategory =
+                item.getAttribute("data-category");
+
+            if (
+                selectedCategory === "all" ||
+                itemCategory === selectedCategory
+            ) {
+
+                item.style.display = "block";
+
+            } else {
+
+                item.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+});
+
+// ==============================
+// WORK LIGHTBOX
+// ==============================
+
+const workImages = document.querySelectorAll(".work-gallery-image");
+
+const workLightbox = document.getElementById("workLightbox");
+const workLightboxImage = document.getElementById("workLightboxImage");
+
+const workLightboxClose = document.getElementById("workLightboxClose");
+const workLightboxPrev = document.getElementById("workLightboxPrev");
+const workLightboxNext = document.getElementById("workLightboxNext");
+
+let currentWorkImage = 0;
+
+
+function showWorkImage(index) {
+
+    workLightboxImage.src = workImages[index].src;
+
+    
+}
+
+
+workImages.forEach(function(image, index) {
+
+    image.addEventListener("click", function() {
+
+        currentWorkImage = index;
+
+        showWorkImage(currentWorkImage);
+
+        workLightbox.classList.add("active");
+
+        document.body.style.overflow = "hidden";
+
+    });
+
+});
+
+
+workLightboxPrev.addEventListener("click", function() {
+
+    currentWorkImage--;
+
+    if (currentWorkImage < 0) {
+        currentWorkImage = workImages.length - 1;
+    }
+
+    showWorkImage(currentWorkImage);
+
+});
+
+
+workLightboxNext.addEventListener("click", function() {
+
+    currentWorkImage++;
+
+    if (currentWorkImage >= workImages.length) {
+        currentWorkImage = 0;
+    }
+
+    showWorkImage(currentWorkImage);
+
+});
+
+
+function closeWorkLightbox() {
+
+    workLightbox.classList.remove("active");
+
+    document.body.style.overflow = "";
+
+}
+
+
+workLightboxClose.addEventListener("click", closeWorkLightbox);
+
+
+workLightbox.addEventListener("click", function(event) {
+
+    if (event.target === workLightbox) {
+        closeWorkLightbox();
+    }
+
+});
+
+
+document.addEventListener("keydown", function(event) {
+
+    if (!workLightbox.classList.contains("active")) {
+        return;
+    }
+
+    if (event.key === "Escape") {
+        closeWorkLightbox();
+    }
+
+    if (event.key === "ArrowLeft") {
+
+        currentWorkImage--;
+
+        if (currentWorkImage < 0) {
+            currentWorkImage = workImages.length - 1;
+        }
+
+        showWorkImage(currentWorkImage);
+
+    }
+
+    if (event.key === "ArrowRight") {
+
+        currentWorkImage++;
+
+        if (currentWorkImage >= workImages.length) {
+            currentWorkImage = 0;
+        }
+
+        showWorkImage(currentWorkImage);
+
+    }
+
+});
+
+const workMenuToggle = document.querySelector(".work-menu-toggle");
+const workNavLinks = document.querySelector(".work-nav-links");
+
+workMenuToggle.addEventListener("click", function () {
+    workNavLinks.classList.toggle("active");
+});
+
+</script>
+
+
+</body>
+
+</html>
