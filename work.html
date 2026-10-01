@@ -707,6 +707,7 @@
 
 
 
+
     categoryButtons.forEach(function(button) {
 
     button.addEventListener("click", function() {
@@ -743,6 +744,35 @@
     });
 
 });
+
+const urlParams = new URLSearchParams(window.location.search);
+const categoryFromURL = urlParams.get("category");
+
+if (categoryFromURL) {
+
+    galleryItems.forEach(function(item) {
+
+        const itemCategory = item.getAttribute("data-category");
+
+        if (itemCategory === categoryFromURL) {
+            item.style.display = "block";
+        } else {
+            item.style.display = "none";
+        }
+
+    });
+
+    categoryButtons.forEach(function(button) {
+
+        button.classList.remove("active");
+
+        if (button.textContent.trim().toLowerCase() === categoryFromURL) {
+            button.classList.add("active");
+        }
+
+    });
+
+}
 
 // ==============================
 // WORK LIGHTBOX
