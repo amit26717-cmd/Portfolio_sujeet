@@ -140,10 +140,10 @@
 }
 
         .gallery {
-            padding: 0 5% 100px;
+            padding: 0 6% 100px;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 28px;
         }
 
         .gallery-item {
@@ -158,18 +158,32 @@
 }
 
         .gallery-item:hover img {
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
 
+            .gallery-item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.gallery-item:hover::after {
+    opacity: 1;
+}
 
         .gallery-item {
     position: relative;
+    border-radius: 2px;
 }
 
 .image-info {
     position: absolute;
-    left: 25px;
-    bottom: 25px;
+    left: 20px;
+    bottom: 20px;
 
     color: #fff;
 
@@ -444,7 +458,7 @@
         </h1>
 
         <p>
-            A collection of photographser that exploring
+            A collection of photographs exploring
             fashion, portrait, product and creative visual stories.
         </p>
 
@@ -703,8 +717,9 @@
 
 <script>
 
-    const categoryButtons = document.querySelectorAll(".category-nav button");
-    const galleryItems = document.querySelectorAll(".gallery-item");
+ const categoryButtons = document.querySelectorAll(".category-nav button");
+const galleryItems = document.querySelectorAll(".gallery-item");
+let workImages = [];
 
 
 
@@ -718,6 +733,8 @@
         });
 
         button.classList.add("active");
+        updateWorkImages();
+        attachWorkImageEvents();
 
         const selectedCategory =
             button.textContent.toLowerCase();
@@ -763,6 +780,7 @@ if (categoryFromURL) {
 
     });
 
+    
     categoryButtons.forEach(function(button) {
 
         button.classList.remove("active");
@@ -773,13 +791,15 @@ if (categoryFromURL) {
 
     });
 
+    updateWorkImages();
+
 }
 
 // ==============================
 // WORK LIGHTBOX
 // ==============================
 
-const workImages = document.querySelectorAll(".work-gallery-image");
+
 
 const workLightbox = document.getElementById("workLightbox");
 const workLightboxImage = document.getElementById("workLightboxImage");
@@ -791,6 +811,32 @@ const workLightboxNext = document.getElementById("workLightboxNext");
 let currentWorkImage = 0;
 
 
+
+function updateWorkImages() {
+
+    const activeCategory =
+        document.querySelector(".category-nav button.active")
+        .textContent
+        .toLowerCase();
+
+    if (activeCategory === "all") {
+
+        workImages =
+            document.querySelectorAll(".work-gallery-image");
+
+    } else {
+
+        workImages =
+            document.querySelectorAll(
+                '.gallery-item[data-category="' +
+                activeCategory +
+                '"] .work-gallery-image'
+            );
+
+    }
+
+}
+
 function showWorkImage(index) {
 
     workLightboxImage.src = workImages[index].src;
@@ -799,21 +845,27 @@ function showWorkImage(index) {
 }
 
 
-workImages.forEach(function(image, index) {
+function attachWorkImageEvents() {
 
-    image.addEventListener("click", function() {
+    workImages.forEach(function(image, index) {
 
-        currentWorkImage = index;
+        image.addEventListener("click", function() {
 
-        showWorkImage(currentWorkImage);
+            currentWorkImage = index;
 
-        workLightbox.classList.add("active");
+            showWorkImage(currentWorkImage);
 
-        document.body.style.overflow = "hidden";
+            workLightbox.classList.add("active");
+
+            document.body.style.overflow = "hidden";
+
+        });
 
     });
 
-});
+}
+updateWorkImages();
+attachWorkImageEvents();
 
 
 workLightboxPrev.addEventListener("click", function() {
